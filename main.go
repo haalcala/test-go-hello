@@ -277,6 +277,139 @@ func test_range2() {
 // 	pic.Show(Pic)
 // }
 
+type Vertex2 struct {
+	Lat, Long float64
+}
+
+var m map[string]Vertex2
+
+func test_map() {
+	m = make(map[string]Vertex2)
+	m["Bell Labs"] = Vertex2{
+		40.68433, -74.39967,
+	}
+	fmt.Println(m["Bell Labs"])
+}
+
+var m2 = map[string]Vertex2{
+	"Bell Labs": Vertex2{
+		40.68433, -74.39967,
+	},
+	"Google": Vertex2{
+		37.42202, -122.08408,
+	},
+}
+
+func test_map2() {
+	fmt.Println(m2)
+}
+
+var m3 = map[string]Vertex2{
+	"Bell Labs": {40.68433, -74.39967},
+	"Google":    {37.42202, -122.08408},
+}
+
+func test_map3() {
+	fmt.Println(m3)
+}
+
+func test_map4() {
+	m := make(map[string]int)
+
+	m["Answer"] = 42
+	fmt.Println("The value:", m["Answer"])
+
+	m["Answer"] = 48
+	fmt.Println("The value:", m["Answer"])
+
+	delete(m, "Answer")
+	fmt.Println("The value:", m["Answer"])
+
+	v, ok := m["Answer"]
+	fmt.Println("The value:", v, "Present?", ok)
+}
+
+func compute(fn func(float64, float64) float64) float64 {
+	return fn(3, 4)
+}
+
+func test_function() {
+	hypot := func(x, y float64) float64 {
+		return math.Sqrt(x*x + y*y)
+	}
+	fmt.Println(hypot(5, 12))
+
+	fmt.Println(compute(hypot))
+	fmt.Println(compute(math.Pow))
+}
+
+func test_function2() {
+	hypot := func(x, y float64) float64 {
+		return math.Sqrt(x*x + y*y)
+	}
+	fmt.Println(hypot(5, 12))
+
+	fmt.Println(compute(hypot))
+	fmt.Println(compute(math.Pow))
+}
+
+func adder() func(int) int {
+	sum := 0
+	return func(x int) int {
+		sum += x
+		return sum
+	}
+}
+
+func test_function3() {
+	pos, neg := adder(), adder()
+	for i := 0; i < 10; i++ {
+		fmt.Println(
+			pos(i),
+			neg(-2*i),
+		)
+	}
+}
+
+// fibonacci is a function that returns
+// a function that returns an int.
+// func fibonacci() func() int {
+// }
+
+// func test_fibonacci() {
+// 	f := fibonacci()
+// 	for i := 0; i < 10; i++ {
+// 		fmt.Println(f())
+// 	}
+// }
+
+type Vertex4 struct {
+	X, Y float64
+}
+
+func (v Vertex4) Abs() float64 {
+	return math.Sqrt(v.X*v.X + v.Y*v.Y)
+}
+
+func test_method() {
+	v := Vertex4{3, 4}
+	fmt.Println(v.Abs())
+}
+
+type MyFloat float64
+
+func (f MyFloat) Abs() float64 {
+	if f < 0 {
+		return float64(-f)
+	}
+	return float64(f)
+}
+
+func test_method2() {
+	f := MyFloat(-math.Sqrt2)
+	fmt.Println(f.Abs())
+}
+
 func main() {
 	fmt.Println("Welcome to the playground!")
 
@@ -324,4 +457,24 @@ func main() {
 	test_range2()
 
 	// test_array_slice7()
+
+	test_map()
+
+	test_map2()
+
+	test_map3()
+
+	test_map4()
+
+	test_function()
+
+	test_function2()
+
+	test_function3()
+
+	// test_fibonacci()
+
+	test_method()
+
+	test_method2()
 }

@@ -410,6 +410,46 @@ func test_method2() {
 	fmt.Println(f.Abs())
 }
 
+func do(i interface{}) {
+	switch v := i.(type) {
+	case int:
+		fmt.Printf("Twice %v is %v\n", v, v*2)
+	case string:
+		fmt.Printf("%q is %v bytes long\n", v, len(v))
+	default:
+		fmt.Printf("I don't know about type %T!\n", v)
+	}
+}
+
+type Vector struct {
+	X, Y int
+	z    interface{}
+}
+
+func test_type() {
+	do(21)
+	do("hello")
+	do(true)
+
+	var v interface{}
+
+	v = "hello"
+
+	v, ok := v.(string)
+
+	vv := Vector{}
+
+	fmt.Println(ok)
+
+	fmt.Println("vv", vv)
+
+	t := vv.z
+
+	t, ok = t.(string)
+
+	fmt.Println("t", t.(string), "ok", ok, t == nil)
+}
+
 func main() {
 	fmt.Println("Welcome to the playground!")
 
@@ -477,4 +517,12 @@ func main() {
 	test_method()
 
 	test_method2()
+
+	test_type()
+
+	vcm := &VCMessenger{}
+
+	fmt.Println(vcm)
+}
+
 }

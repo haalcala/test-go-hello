@@ -2,9 +2,11 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"math"
 	"math/rand"
 	"runtime"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -450,6 +452,36 @@ func test_type() {
 	fmt.Println("t", t.(string), "ok", ok, t == nil)
 }
 
+func test_map_types() {
+	hosts := map[string]interface{}{
+		"loopback":  []int{127, 0, 0, 1},
+		"googleDNS": []string{"8"},
+		"bla":       "bla",
+	}
+	for name, ip := range hosts {
+		fmt.Printf("%v: %v\n", name, ip)
+	}
+
+	fmt.Println([]int{0, 1, 2, 3})
+}
+
+func test_io() {
+	fmt.Println("------------------------------------------------------ test_io")
+
+	r := strings.NewReader("Hello, Reader!")
+
+	b := make([]byte, 8)
+	for {
+		n, err := r.Read(b)
+		fmt.Println("b: ", string(b))
+		fmt.Printf("n = %v err = %v b = %v len: %d\n", n, err, b, len(b))
+		fmt.Printf("b[:n] = %q\n", b[:n])
+		if err == io.EOF {
+			break
+		}
+	}
+}
+
 func main() {
 	fmt.Println("Welcome to the playground!")
 
@@ -519,6 +551,10 @@ func main() {
 	test_method2()
 
 	test_type()
+
+	test_map_types()
+
+	test_io()
 
 	vcm := &VCMessenger{}
 
